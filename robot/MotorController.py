@@ -2,7 +2,7 @@ import serial
 
 class MotorController(object):
 	def __init__(self):
-		self.ser = serial.Serial("/dev/ttyACM0",9600)
+		self.ser = serial.Serial("/dev/ttyACM1",9600)
 
 	def stop(self):
 		self.ser.write(str.encode("S;"))
@@ -13,5 +13,5 @@ class MotorController(object):
 	def rightM(self, speed):
 		self.ser.write(str.encode("R"+str(speed)+";"))
 
-	def yawCam(self, pwm):
-		self.ser.write(str.encode("CY"+str(pwm)+";"))
+	def yawCam(self, angle):
+		self.ser.write(str.encode("Y"+str(angle)+";"))

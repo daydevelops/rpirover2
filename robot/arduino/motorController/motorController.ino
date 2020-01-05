@@ -1,12 +1,15 @@
 #include <string.h>
+#include <Servo.h>
 // motor 1
-int enA = 10;
+int enA = 3;
 int in1 = 9; 
 int in2 = 8;
 // motor 2
 int in3 = 7;
 int in4 = 6;
 int enB = 5;
+
+Servo cam_yaw_servo;
 
 String msg = "";
 char command;
@@ -18,6 +21,7 @@ void setup() {
   pinMode(in3,OUTPUT);
   pinMode(in4,OUTPUT);
   pinMode(enB,OUTPUT);
+  cam_yaw_servo.attach(11);
   Serial.begin(9600); // Starts the serial communication
 }
 
@@ -29,13 +33,20 @@ void processMessage(char command, String msg) {
     case 'R':
       changeRightMotor(atoi(msg.c_str()));
       break;
+    case 'Y':
+      yawCam(atoi(msg.c_str()));
+      break;
     case 'S':
       stopMotors();
       break;
   } 
 }
+void yawCam(int angle) {
+   cam_yaw_servo.write(angle);
+}
 
 void changeLeftMotor(int speed) {
+   Serial.println(speed);
   if (speed<0) {
     digitalWrite(in1,HIGH);
     digitalWrite(in2,LOW);
@@ -83,6 +94,7 @@ void loop() {
       }
       
       if (character == ';') { // end of command
+        // Serial.println(msg);
         processMessage(command,msg);
         msg = "";
         msgReceived = 1; // reset
