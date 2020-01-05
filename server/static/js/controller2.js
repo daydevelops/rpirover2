@@ -64,7 +64,7 @@ function sendMotorSpeeds() {
 
 function yawCamera(value) {
 	if (!is_powered_on) return false;
-	if (Math.abs(value) < 0.15) {
+	if (Math.abs(value) < 0.05) {
 		value = 0;
 	}
 	if ((value == 0 && cam_yaw != 0) || Math.abs(value-cam_yaw)>0.05) {
