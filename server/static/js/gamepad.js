@@ -53,7 +53,7 @@ function removegamepad(gamepad) {
   console.log("removing gamepad")
   controller = null;
   clearInterval(controller_check_interval);
-  powerOff();
+  // powerOff();
 }
 
 function updateStatus() {

@@ -6,6 +6,7 @@ import os
 import sys
 import subprocess
 import json
+import atexit
 
 # import camera driver
 sys.path.append('cam')
@@ -50,15 +51,13 @@ def connect():
 	global robot
 	print('Initializing Robot')
 	robot = Robot.Robot()
-	# start the camera
-	# global cam
-	# cam = subprocess.Popen('python3 /var/www/html/rpr2/cam/cam_feed.py',shell=True)
+	atexit.register(robot.stop)
 
 @socketio.on('disconnect')
 def disconnect():
 	print('Client disconnected')
 	global robot
-	# robot.stop()
+	robot.stop()
 	# global cam
 	# cam.kill()
 

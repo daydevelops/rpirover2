@@ -4,11 +4,11 @@ import MotorController as MC
 
 class Robot(object):
 	def __init__(self):
-		self.left_trim = 0
+		self.left_trim = 15
 		self.right_trim = 0
-		# self.motors = MC.MotorController() #arduino motor controller class
+		self.motors = MC.MotorController() #arduino motor controller class
 		# Configure all motors to stop at program exit if desired.
-		# atexit.register(self.stop)
+		atexit.register(self.stop)
 		print("robot initialized")
 		
 	def changeTrim(self,change):
@@ -17,24 +17,25 @@ class Robot(object):
 
 	def yawCam(self,input):
 		# input will be in range of -1 to 1
-		# convert to PWM range of 0 - 255
-		pwm = (float(input)/2) * 255
-		# self.motors.yawCam(pwm)
+		# convert to angle range of 0 - 180
+		input = float(input) * -1 # reverse direction
+		angle = ((input+1)/2) * 180
+		self.motors.yawCam(angle)
 		
-	# def stop(self):
-		# self.motors.stop()
+	def stop(self):
+		self.motors.stop()
 
 	def drive(self,inputs):
 		motorSpeeds = self.calculateMotorSpeeds(inputs)
-		# self.leftM(motorSpeeds['LM'])
-		# self.rightM(motorSpeeds['RM'])
+		self.leftM(motorSpeeds['LM'])
+		self.rightM(motorSpeeds['RM'])
 		return motorSpeeds
 
-	# def leftM(self, speed):
-		# self.motors.rightM(speed)
+	def leftM(self, speed):
+		self.motors.rightM(speed)
 
-	# def rightM(self, speed):
-		# self.motors.leftM(speed)
+	def rightM(self, speed):
+		self.motors.leftM(speed)
 
 	def calculateMotorSpeeds(self,data):
 		# acceptable range of input data:
